@@ -1,10 +1,12 @@
-import * as React from "react";
+import  React, { useState } from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { TextInput, Touchable, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TextInput, Touchable, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginForm = () => {
+  const [email,setEmail]=useState("")
+  const [loading,setLoading]=useState(false)
   const navigation=useNavigation()
   return <Center w="100%">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -37,9 +39,11 @@ const LoginForm = () => {
             </Text>
             </TouchableOpacity>
           </FormControl>
+          {loading?<ActivityIndicator color={"#267FFF"}/>:
           <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>navigation.navigate("ProfileScreen")}>
             Sign in
           </Button>
+}
           <HStack mt="6" justifyContent="center">
             <View style={{flexDirection:"row"}}>
             <Text fontSize="sm" color="coolGray.600" _dark={{

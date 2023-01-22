@@ -6,6 +6,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import TabHeader from './components/TabHeader';
 import AccountConfirmationScreen from './screens/AccountConfirmation';
 import ChatScreen from './screens/ChatScreen';
+import ChoosePasswordScreen from './screens/ChoosePasswordScreen';
 import ChooseUserNameScreen from './screens/ChooseUserNameScreen';
 import ForgotPasswordEmailScreen from './screens/ForgotPasswordEmailScreen';
 import ForgotPasswordPasswordScreen from './screens/ForgotPasswordPassword';
@@ -34,6 +35,7 @@ export default function App() {
       <Stack.Screen name="ForgotPasswordPasswordScreen" component={ForgotPasswordPasswordScreen} options={{headerShown:false}} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerTitle:"Your Chats"}}/>
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerTitle:"Settings"}}/>
+      <Stack.Screen name="ChoosePasswordScreen" component={ChoosePasswordScreen} options={{headerShown:false}}/>
 
     </Stack.Navigator>
   </NavigationContainer>

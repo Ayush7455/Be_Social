@@ -1,11 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider, useNativeBase } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const SignUpForm = () => {
   const navigation=useNavigation()
+  const [email,setEmail]=useState("")
+  const [loading,setLoading]=useState(false)
+  const handleEmail = () => {
+    // setLoading(true)
+    // navigation.navigate('Signup_EnterVerificationCode')
+    if (email == '') {
+        alert('Please enter email')
+    }
+    else {
+        setLoading(true)
+        fetch('http://10.0.2.2:3000/verify', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email
+            })
+        })
+            .then(res => res.json()).then(
+                data => {
+                    if (data.error === "Invalid Credentials") {
+                        // alert('Invalid Credentials')
+                        alert('Invalid Credentials')
+                        setLoading(false)
+                    }
+                    else if (data.message === "Verification Code Sent to your Email") {
+                        setLoading(false)
+                        alert(data.message);
+                        navigation.navigate('VerificationCodeScreen', {
+                            useremail: data.email,
+                            userVerificationCode: data.VerificationCode
+                        })
+
+                    }
+                }
+            )
+    }
+}
   
   return <Center w="100%">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -19,26 +58,16 @@ const SignUpForm = () => {
           <FormControl>
             <View style={{borderWidth:2,borderColor:"#F2F6FF",height:45,alignItems:'center',flexDirection:"row",borderRadius:5}}>
             <MaterialIcons name="email" size={20} color="#267FFF" style={{paddingRight:7}}/>
-            <TextInput  placeholder="Enter your email" style={{width:"100%"}}></TextInput>
+            <TextInput  placeholder="Enter your email" style={{width:"100%"}} onChangeText={(text)=>setEmail(text)}></TextInput>
             </View>
           </FormControl>
-          <FormControl>
-          <View style={{borderWidth:2,height:45,borderColor:"#F2F6FF",alignItems:'center',flexDirection:"row",borderRadius:5}}>
-          <MaterialIcons name="lock" size={20} color="#267FFF" style={{paddingRight:7}} />
-            <TextInput placeholder="Enter your password" style={{width:"100%"}}></TextInput>
-            </View>
-          </FormControl>
-          <FormControl>
-          <View style={{borderWidth:2,height:45,borderColor:"#F2F6FF",alignItems:'center',flexDirection:"row",borderRadius:5}}>
-          <MaterialIcons name="lock" size={20} color="#267FFF" style={{paddingRight:7}} />
-            <TextInput placeholder="Confirm your password" style={{width:"100%"}}></TextInput>
-            </View>
-          </FormControl>
+        
           
-          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>navigation.navigate("VerificationCodeScreen")}>
-            Sign Up
+          
+          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>handleEmail()}>
+          {loading?<ActivityIndicator color={"#fff"}/>:<Text style={{color:"white"}}>Sign Up</Text>} 
           </Button>
-          
+
         </VStack>
       </Box>
     </Center>;

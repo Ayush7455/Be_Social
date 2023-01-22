@@ -4,19 +4,22 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import LoginForm from "../components/LoginForm";
 import { Image, View } from "react-native";
 import Logo from "../assets/images/logo.jpeg"
-import SignUpForm from "../components/SignUpForm";
-import VerificationCodeForm from "../components/VerificationCodeForm";
-const VerificationCodeScreen=({route})=>{
-    const {useremail,userVerificationCode}=route.params
+import ChooseUserName from "../components/ChooseUserNameForm";
+import ForgotPasswordEmailForm from "../components/ForgotPasswordEmailForm";
+import ForgotPasswordPasswordForm from "../components/ForgotPasswordPasswordForm";
+import ChoosePasswordForm from "../components/ChoosePasswordForm";
+const ChoosePasswordScreen=({route})=>{
+    const {email,username}=route.params
+    
     const navigation=useNavigation()
     return (
         <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
             <Image source={Logo} style={{width:50,height:50}}/>
             
        <View style={{width:"90%",backgroundColor:"#fff",borderRadius:10,elevation:2}}>
-        <VerificationCodeForm useremail={useremail} userVerificationCode={userVerificationCode}/>
+        <ChoosePasswordForm email={email} username={username}/>
        </View>
        </View>
     )
 }
-export default VerificationCodeScreen
+export default ChoosePasswordScreen
