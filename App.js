@@ -11,6 +11,7 @@ import ForgotPasswordEmailScreen from './screens/ForgotPasswordEmailScreen';
 import ForgotPasswordPasswordScreen from './screens/ForgotPasswordPassword';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import SettingsScreen from './screens/SettingsScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import VerificationCodeForgotScreen from './screens/VerificationCodeForgotScreen';
 import VerificationCodeScreen from './screens/VerificationCodeScreen';
@@ -32,6 +33,7 @@ export default function App() {
       <Stack.Screen name="VerificationCodeForgotScreen" component={VerificationCodeForgotScreen} options={{headerShown:false}} />
       <Stack.Screen name="ForgotPasswordPasswordScreen" component={ForgotPasswordPasswordScreen} options={{headerShown:false}} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerTitle:"Your Chats"}}/>
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerTitle:"Settings"}}/>
 
     </Stack.Navigator>
   </NavigationContainer>

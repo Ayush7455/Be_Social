@@ -45,7 +45,7 @@ const FeedItems=({
     return (
              
             
-                <View style={{width:"100%",alignItems:"center",marginTop:40}}>
+                <View style={{width:"100%",alignItems:"center",marginTop:20,borderBottomColor:"#F8F8F8",borderBottomWidth:2,paddingBottom:10}}>
                     <View style={{width:"90%",display:"flex",justifyContent:"space-between",flexDirection:"row",
                 alignItems:"center"}}>
                     <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
@@ -74,12 +74,12 @@ const FeedItems=({
                     }}
                     />
                    
-                   {liked? <View style={{marginTop:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
+                   {liked? <View style={{marginVertical:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
                 
                         <AntDesign name="like1" size={24} color="#267FFF" onPress={()=>{setLiked(false)}}/>
         
                         <Text style={{marginLeft:5,color:"#267FFF"}}> {likes.length+1}</Text>
-                        </View>: <View style={{marginTop:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
+                        </View>: <View style={{marginVertical:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
                      
                         <AntDesign name="like2" size={24} color="#267FFF" onPress={()=>setLiked(true)}/>
                        
