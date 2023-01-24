@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import {Animated, Dimensions, Text,View,FlatList,ActivityIndicator, TextInput, ScrollView} from "react-native";
+import {Animated, Dimensions, Text,View,FlatList,ActivityIndicator, TextInput, ScrollView, AsyncStorage} from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {FontAwesome5} from "@expo/vector-icons";
 import { FontAwesome } from '@expo/vector-icons';
@@ -13,6 +13,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AccountHeader from "./AccountHeader";
 import { Image } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import NoImage from "../assets/images/noimg.png";
 
 const datas=[
     {
@@ -415,6 +416,13 @@ const users=[
 
 
 const HomeScreen=()=>{
+   const [userdata,setUserdata]=useState(null)
+   useEffect(()=>{
+    AsyncStorage.getItem("user").then(data=>{
+        setUserdata(JSON.parse(data))
+    }).catch(err=>alert(err))
+   },[])
+    console.log("userdata",userdata)
     return(
 <View style={{backgroundColor:"#fff",flex:1}}>
 <View style={{width:"100%"}}>
@@ -467,38 +475,75 @@ const SearchScreen=()=>{
 const AccountScreen=()=>{
     const width=Dimensions.get("window").width
     const navigation=useNavigation()
+    const [userdata, setUserdata] = React.useState(null)
+    useEffect(() => {
+        AsyncStorage.getItem('user')
+            .then(async (value) => {
+                fetch('http://10.0.2.2:3000/userdata', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + JSON.parse(value).token
+                    },
+                    body: JSON.stringify({ email: JSON.parse(value).user.email })
+                })
+                    .then(res => res.json()).then(data => {
+                        if (data.message == 'User Found') {
+                            setUserdata(data.user)
+                        }
+                        else {
+                            alert('Login Again')
+                            navigation.navigate('Login')
+                        }
+                    })
+                    .catch(err => {
+                        navigation.navigate('Login')
+                    })
+            })
+            .catch(err => {
+                navigation.navigate('Login')
+            })
+    }, [])
+
+    console.log('userdata ', userdata)
+
     return(
         <View style={{backgroundColor:"#fff",flex:1}}>
+            {userdata?
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{alignItems:"center"}}>
                     <View style={{width:200,height:200,borderRadius:100,overflow:"hidden",marginTop:10}}>
-                    <Image source={{
-                        uri:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-                    }} style={{flex:1,width:undefined,height:undefined}}/>
+                        {userdata.profilepic.length>0?
+                        <Image source={{
+                            uri:userdata.profilepic
+                        }} style={{flex:1,width:undefined,height:undefined}}/>:
+                    <Image source={NoImage} style={{flex:1,width:undefined,height:undefined}}/>
+                }
                     </View>
                     <View style={{backgroundColor:"#41444B",position:"absolute",top:30,left:width-300,width:40,height:40,borderRadius:20,alignItems:"center",justifyContent:"center"}}>
                         <MaterialIcons name="chat" size={18} color="#DFD8C8" onPress={()=>navigation.navigate("ChatScreen")}></MaterialIcons>
                     </View>
                     <View style={{alignSelf:"center",alignItems:"center",marginTop:16}}>
-                        <Text style={{fontWeight:"200",fontSize:36}}>Yakuza</Text>
-                        <Text style={{fontSize:14,color:"#AEB5BC"}}>I am a gamer</Text>
+                    <Text style={{fontWeight:"200",fontSize:36}}>{userdata.username}</Text>
+                        <Text style={{fontSize:14,color:"#AEB5BC"}}>{userdata.description}</Text>
                     </View>
         
                         <View style={{flexDirection:"row",alignSelf:"center",marginTop:16}}>
                             <View style={{alignItems:"center",flex:1}}>
-                            <Text style={{fontSize:24}}>483</Text>
+                            <Text style={{fontSize:24}}>{userdata.posts.length}</Text>
                             <Text style={{fontSize:12,color:"#AEB5BC",textTransform:"uppercase",fontWeight:"500"}}>Posts</Text>
                             </View>
                             <View style={{alignItems:"center",flex:1,borderColor:"#DFD8C8",borderLeftWidth:1,borderRightWidth:1}}>
-                            <Text style={{fontSize:24}}>44,5484</Text>
+                            <Text style={{fontSize:24}}>{userdata.followers.length}</Text>
                             <Text style={{fontSize:12,color:"#AEB5BC",textTransform:"uppercase",fontWeight:"500"}}>Followers</Text>
                             </View>
                             <View style={{alignItems:"center",flex:1}}>
-                            <Text style={{fontSize:24}}>757</Text>
+                            <Text style={{fontSize:24}}>{userdata.following.length}</Text>
                             <Text style={{fontSize:12,color:"#AEB5BC",textTransform:"uppercase",fontWeight:"500"}}>Following</Text>
                             </View>
                         </View>
                 </View>
+                {userdata.posts.length>0?
                 <View style={{marginTop:32,alignItems:"center"}}>
                 <Text style={{fontWeight:"200",fontSize:20,textAlign:"center",marginBottom:20}}>Your Posts</Text>
                 <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}}>
@@ -507,45 +552,14 @@ const AccountScreen=()=>{
                             uri:"https://occ-0-395-1007.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABYxJFBDckfZw1YUEIPwyuIg43Kw_HUBLvnCcgdOlvvf5Nc90SF3HSAi5L8uLyBqjziKBY-kGD2wu2JAqVsdHVR0frb6qG26I_U5v.jpg?r=77f"
                         }
                     } style={{height:120,width:"30%",margin:5}}/>
-                    <Image source={
-                        {
-                            uri:"https://c4.wallpaperflare.com/wallpaper/738/62/544/naruto-chidori-naruto-naruto-uzumaki-rasengan-naruto-sasuke-uchiha-hd-wallpaper-preview.jpg"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                    <Image source={
-                        {
-                            uri:"https://i0.wp.com/www.smartprix.com/bytes/wp-content/uploads/2022/11/Naruto.jpg?fit=1280%2C720&ssl=1"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                    <Image source={
-                        {
-                            uri:"https://i0.wp.com/anitrendz.net/news/wp-content/uploads/2022/10/roadtonarutopv_screenshot.png"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                    <Image source={
-                        {
-                            uri:"https://images4.alphacoders.com/476/47698.png"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                    <Image source={
-                        {
-                            uri:"https://occ-0-395-1007.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABYxJFBDckfZw1YUEIPwyuIg43Kw_HUBLvnCcgdOlvvf5Nc90SF3HSAi5L8uLyBqjziKBY-kGD2wu2JAqVsdHVR0frb6qG26I_U5v.jpg?r=77f"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                     <Image source={
-                        {
-                            uri:"https://occ-0-395-1007.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABYxJFBDckfZw1YUEIPwyuIg43Kw_HUBLvnCcgdOlvvf5Nc90SF3HSAi5L8uLyBqjziKBY-kGD2wu2JAqVsdHVR0frb6qG26I_U5v.jpg?r=77f"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-                     <Image source={
-                        {
-                            uri:"https://occ-0-395-1007.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABYxJFBDckfZw1YUEIPwyuIg43Kw_HUBLvnCcgdOlvvf5Nc90SF3HSAi5L8uLyBqjziKBY-kGD2wu2JAqVsdHVR0frb6qG26I_U5v.jpg?r=77f"
-                        }
-                    } style={{height:120,width:"30%",margin:5}}/>
-
+                    
                 </View>
+                </View>:<View style={{marginTop:32,alignItems:"center"}}>
+                <Text style={{fontWeight:"200",fontSize:20,textAlign:"center",marginBottom:20}}>You have not posted anything</Text>
                 </View>
-            </ScrollView>
+}
+            </ScrollView>:<ActivityIndicator color={"#267FFF"} size={"large"}/>
+}
 
 
         </View>
@@ -560,7 +574,9 @@ const Tab=createBottomTabNavigator()
 const TabNavigator=()=>{
 
     return (
-            <Tab.Navigator screenOptions={
+            <Tab.Navigator initialRouteName="Home"
+            
+            screenOptions={
                 {
                     tabBarShowLabel:false,
                     style:{

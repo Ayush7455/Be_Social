@@ -8,7 +8,6 @@ import Cross from "../assets/images/x.png";
 import { FontAwesome } from '@expo/vector-icons';
 
 const ChooseUserName = ({email}) => {
-  const useremail=email
   const [userName,setUserName]=useState("")
   const [loading,setLoading]=useState(false)
   const navigation=useNavigation()
@@ -24,7 +23,7 @@ const ChooseUserName = ({email}) => {
           "Content-Type":"application/json"
         },
         body:JSON.stringify({
-          email:useremail,
+          email:email,
           username:userName
         })
       })
@@ -32,7 +31,7 @@ const ChooseUserName = ({email}) => {
         data=>{
           if(data.message==="Username Available"){
             setLoading(false)
-            navigation.navigate("ChoosePasswordScreen",{email:useremail,username:userName})
+            navigation.navigate("ChoosePasswordScreen",{email:email,username:userName})
           }
           else{
             setLoading(false)

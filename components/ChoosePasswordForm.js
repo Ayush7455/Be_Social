@@ -22,7 +22,7 @@ const ChoosePasswordForm = ({email,username}) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email:email.email, username: username, password: password })
+            body: JSON.stringify({ email:email, username: username, password: password })
         })
             .then(res => res.json()).then(
                 data => {

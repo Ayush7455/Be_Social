@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider, useNativeBase } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Success from "../assets/images/success.png";
 import Cross from "../assets/images/x.png";
@@ -28,9 +28,51 @@ const ModalPopup=({children,visible})=>{
         </Modal>
       )
     }
-const ForgotPasswordPasswordForm = () => {
+const ForgotPasswordPasswordForm = ({
+  email
+
+}) => {
   const navigation=useNavigation()
+  const [password, setpassword] = useState('')
+  const [confirmpassword, setconfirmpassword] = useState('')
+  const [loading, setLoading] = useState(false)
   const[visible,setVisible]=useState(false)
+  const handlePasswordChange = () => {
+    if (password == '' || confirmpassword == '') {
+        Alert.alert('Please enter password')
+    } else if (password != confirmpassword) {
+        Alert.alert('Password does not match')
+    }
+
+    else {
+        setLoading(true);
+        fetch('http://10.0.2.2:3000/resetpassword', {
+
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email, password: password })
+        })
+            .then(res => res.json()).then(
+                data => {
+                    if (data.message === "Password Changed Successfully") {
+                        setLoading(false)
+                        setVisible(true)
+                    }
+                    else {
+                        setLoading(false)
+                        Alert.alert("Something went wrong");
+                    }
+                })
+            .catch(err => {
+                setLoading(false);
+                Alert.alert(err)
+            })
+    }
+
+    // navigation.navigate('ForgotPassword_AccountRecovered')
+}
   return <Center w="100%">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
         <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
@@ -43,13 +85,13 @@ const ForgotPasswordPasswordForm = () => {
           <FormControl>
           <View style={{borderWidth:2,height:45,borderColor:"#F2F6FF",alignItems:'center',flexDirection:"row",borderRadius:5}}>
           <MaterialIcons name="lock" size={20} color="#267FFF" style={{paddingRight:7}} />
-            <TextInput placeholder="Enter your password" style={{width:"100%"}}></TextInput>
+            <TextInput placeholder="Enter your password" style={{width:"100%"}} onChangeText={(text)=>setpassword(text)}></TextInput>
             </View>
           </FormControl>
           <FormControl>
           <View style={{borderWidth:2,height:45,borderColor:"#F2F6FF",alignItems:'center',flexDirection:"row",borderRadius:5}}>
           <MaterialIcons name="lock" size={20} color="#267FFF" style={{paddingRight:7}} />
-            <TextInput placeholder="Confirm your password" style={{width:"100%"}}></TextInput>
+            <TextInput placeholder="Confirm your password" style={{width:"100%"}} onChangeText={(text)=>setconfirmpassword(text)}></TextInput>
             </View>
           </FormControl>
           <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
@@ -73,8 +115,10 @@ const ForgotPasswordPasswordForm = () => {
             </ModalPopup>
           </View>
           
-          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>setVisible(true)}>
-            Sign Up
+          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>{handlePasswordChange()}}>
+            {
+              loading?<ActivityIndicator color={"#fff"}/>:<Text style={{color:"#fff"}}>Sign Up</Text>
+            }
           </Button>
           
         </VStack>

@@ -8,6 +8,7 @@ import SignUpForm from "../components/SignUpForm";
 import VerificationCodeForm from "../components/VerificationCodeForm";
 const VerificationCodeScreen=({route})=>{
     const {useremail,userVerificationCode}=route.params
+    
     const navigation=useNavigation()
     return (
         <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>

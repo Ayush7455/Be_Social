@@ -9,8 +9,10 @@ import { Foundation } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import HLogo from "../assets/images/logoh.jpeg";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const SettingsScreen=()=>{
+    const navigation=useNavigation()
 
     return (
         <View style={{flex:1,backgroundColor:"#fff"}}>
@@ -52,6 +54,17 @@ const SettingsScreen=()=>{
                 <View style={{flexDirection:"row",alignItems:"center"}}>
                 <Entypo name="info-with-circle" size={25} color="#267FFF"/>
                 <Text style={{marginLeft:5,fontSize:17}}>About</Text>
+                </View>
+                <View>
+                <MaterialIcons name="navigate-next" size={30} color="#267FFF" />
+                </View>
+            </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate("LoginScreen")}>
+            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:10,borderBottomColor:"#F8F8F8",borderBottomWidth:1,height:50,padding:5}}>
+                <View style={{flexDirection:"row",alignItems:"center"}}>
+                <AntDesign name="logout"  size={25} color="#267FFF"/>
+                <Text style={{marginLeft:5,fontSize:17}}>Logout</Text>
                 </View>
                 <View>
                 <MaterialIcons name="navigate-next" size={30} color="#267FFF" />

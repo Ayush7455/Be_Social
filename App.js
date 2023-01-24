@@ -23,7 +23,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
     <NavigationContainer>
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen}options={{headerShown:false}} />
       <Stack.Screen name="VerificationCodeScreen" component={VerificationCodeScreen}options={{headerShown:false}} />

@@ -7,14 +7,15 @@ import Logo from "../assets/images/logo.jpeg"
 import ChooseUserName from "../components/ChooseUserNameForm";
 import ForgotPasswordEmailForm from "../components/ForgotPasswordEmailForm";
 import ForgotPasswordPasswordForm from "../components/ForgotPasswordPasswordForm";
-const ForgotPasswordPasswordScreen=()=>{
+const ForgotPasswordPasswordScreen=({route})=>{
+    const {email}=route.params
     const navigation=useNavigation()
     return (
         <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
             <Image source={Logo} style={{width:50,height:50}}/>
             
        <View style={{width:"90%",backgroundColor:"#fff",borderRadius:10,elevation:2}}>
-        <ForgotPasswordPasswordForm/>
+        <ForgotPasswordPasswordForm email={email}/>
        </View>
        </View>
     )
