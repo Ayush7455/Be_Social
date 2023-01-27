@@ -18,7 +18,7 @@ const ForgotPasswordEmailForm= () => {
 
     else {
         setLoading(true)
-        fetch('http://10.0.2.2:3000/verifyfp', {
+        fetch('https://kind-erin-shrimp-vest.cyclic.app/verifyfp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

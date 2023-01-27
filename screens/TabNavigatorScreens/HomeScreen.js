@@ -1,24 +1,7 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import {Animated, Dimensions, Text,View,FlatList,ActivityIndicator, TextInput, ScrollView, AsyncStorage} from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import {FontAwesome5} from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import HomeHeader from "./HomeHeader";
-import FeedItems from "./FeedItems";
-import TabHeader from "./TabHeader";
-import UserItem from "./UserItem";
-import { useFocusEffect } from '@react-navigation/native';
-import AccountHeader from "./AccountHeader";
-import { Image } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
-import NoImage from "../assets/images/noimg.png";
-import HomeScreen from "../screens/TabNavigatorScreens/HomeScreen";
-import SearchScreen from "../screens/TabNavigatorScreens/SearchScreen";
-import NotificationScreen from "../screens/TabNavigatorScreens/NotificationScreen";
-import AccountScreen from "../screens/TabNavigatorScreens/AccountScreen";
-
+import React, { useEffect,useState } from "react";
+import {View,FlatList,ActivityIndicator,AsyncStorage} from "react-native";
+import BottomNavBar from "../../components/BottomNavBar";
+import FeedItems from "../../components/FeedItems";
 const datas=[
     {
         id:1,
@@ -417,85 +400,27 @@ const users=[
 
 
 ]
-
-
-const Tab=createBottomTabNavigator()
-const TabNavigator=()=>{
-
-    return (
-            <Tab.Navigator 
-            
-            screenOptions={
-                {
-                    tabBarShowLabel:false,
-                    style:{
-                        backgroundColor:"white",
-                        position:"absolute",
-                        bottom:30,
-                        marginHorizontal:20,
-                        height:60,
-                        borderRadius:10,
-                        shadowColor:"#000",
-                        shadowOpacity:0.06,
-                        shadowOffset:{
-                            width:10,
-                            height:10
-                        }
-                    }
-                }
-            }
-            initialRouteName="Home"
-            >
-                <Tab.Screen name={"Home"} component={HomeScreen}
-                options={
-                    
-                    {
-                    headerTitle:HomeHeader,
-                    tabBarIcon:({focused})=>(
-                        <View style={{
-                           alignItems:"center"
-                        }}>
-                            <FontAwesome5 name="home" size={20} color={focused?"#267FFF":"gray"}/>
-                            </View>
-                    )
-                }
-            }
-                />
-                <Tab.Screen name={"Search"} component={SearchScreen}
-                options={{
-                    headerTitle:TabHeader,
-                    tabBarIcon:({focused})=>(
-                        <View style={{
-                           alignItems:"center"
-                        }}>
-                            <FontAwesome5 name="search" size={20} color={focused?"#267FFF":"gray"}/>
-                            </View>
-                    )
-                }}/>
-                <Tab.Screen name={"Notification"} component={NotificationScreen}
-                options={{
-                    headerTitle:TabHeader,
-                    tabBarIcon:({focused})=>(
-                        <View style={{
-                           alignItems:"center"
-                        }}>
-                            <Ionicons name="ios-notifications" size={20} color={focused?"#267FFF":"gray"} />
-                            </View>
-                    )
-                }}/>
-                <Tab.Screen name={"Account"} component={AccountScreen}
-                options={{
-                    headerTitle:AccountHeader,
-                    tabBarIcon:({focused})=>(
-                        <View style={{
-                           alignItems:"center"
-                        }}>
-                            <FontAwesome5 name="user-alt" size={20} color={focused?"#267FFF":"gray"} />
-                            </View>
-                    )
-                }}/>
-
-            </Tab.Navigator>
-    )
-}
-export default TabNavigator
+const HomeScreen=()=>{
+    const [userdata,setUserdata]=useState(null)
+    useEffect(()=>{
+     AsyncStorage.getItem("user").then(data=>{
+         setUserdata(JSON.parse(data))
+     }).catch(err=>alert(err))
+    },[])
+     console.log("userdata",userdata)
+     return(
+ <View style={{backgroundColor:"#fff",flex:1,paddingBottom:25}}>
+ <View style={{width:"100%"}}>
+             {datas.length<1?<ActivityIndicator size={"large"} color={"#2FBBF0"}/>:
+             <FlatList data={datas} renderItem={({item,index})=>(<FeedItems username={item.username} profile_photo={item.profile_photo} feedimage={item.feedimage} likes={item.likes} comments={item.comments} key={item.id}/>)}
+             keyExtractor={(item,index)=>{return item.id.toFixed()}}
+             showsVerticalScrollIndicator={false}
+             />
+             }
+         </View>
+         <BottomNavBar page={"HomeScreen"}/>
+ 
+ </View>
+     )
+ }
+ export default HomeScreen

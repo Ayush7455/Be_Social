@@ -17,7 +17,7 @@ const ChooseUserName = ({email}) => {
     }
     else{
       setLoading(true)
-      fetch("http://10.0.2.2:3000/changeusername",{
+      fetch("https://kind-erin-shrimp-vest.cyclic.app/changeusername",{
         method:"post",
         headers:{
           "Content-Type":"application/json"

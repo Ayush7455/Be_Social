@@ -16,7 +16,7 @@ const LoginForm = () => {
       }
       else {
           setLoading(true)
-          fetch('http://10.0.2.2:3000/signin', {
+          fetch('https://kind-erin-shrimp-vest.cyclic.app/signin', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json'
@@ -30,17 +30,17 @@ const LoginForm = () => {
               .then(async data => {
                   if (data.error) {
                       setLoading(false)
-                      Alert.alert(data.error)
+                      Alert.alert("Server Error")
                   }
                   else if (data.message == 'Successfully Signed In') {
                       setLoading(false)
                       await AsyncStorage.setItem("user",JSON.stringify(data))
-                      navigation.navigate('ProfileScreen', { data })
+                      navigation.navigate('HomeScreen', { data })
                   }
               })
               .catch(err => {
                   setLoading(false)
-                  Alert.alert(err)
+                  Alert.alert("Something went wrong")
               })
       }
       // navigation.navigate('MainPage')

@@ -46,7 +46,7 @@ const ForgotPasswordPasswordForm = ({
 
     else {
         setLoading(true);
-        fetch('http://10.0.2.2:3000/resetpassword', {
+        fetch('https://kind-erin-shrimp-vest.cyclic.app/resetpassword', {
 
             method: 'POST',
             headers: {
