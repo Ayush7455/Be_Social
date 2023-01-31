@@ -1,15 +1,17 @@
 import React, {useEffect, useState } from "react";
-import {Dimensions, Text,View,ActivityIndicator, ScrollView, AsyncStorage,RefreshControl} from "react-native";
+import {Dimensions, Text,View,ActivityIndicator, ScrollView, AsyncStorage,RefreshControl, SafeAreaView} from "react-native";
 import {useNavigation } from "@react-navigation/native";
 import { Image } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import NoImage from "../../assets/images/noimg.png";
 import BottomNavBar from "../../components/BottomNavBar";
+import { StatusBar } from "react-native";
 const AccountScreen=()=>{
     const width=Dimensions.get("window").width
     const navigation=useNavigation()
     const [userdata, setUserdata] = useState(null)
     const [refresh,setRefresh]=useState(false)
+    const[posts,setPosts]=useState([])
     const loaddata = async () => {
         setRefresh(true)
         AsyncStorage.getItem('user')
@@ -25,6 +27,17 @@ const AccountScreen=()=>{
                     .then(res => res.json()).then(data => {
                         if (data.message == 'User Found') {
                             setUserdata(data.user)
+                            fetch('http://10.0.2.2:3000/getuserposts',{
+                                method:"POST",
+                                headers:{
+                                    "Content-Type":"application/json"
+                                },
+                                body: JSON.stringify({ username: JSON.parse(value).user.username })
+
+                            })
+          .then(res => res.json())
+          .then(data => setPosts(data))
+          .catch(error => console.error(error));
                         }
                         else {
                             alert('Login Again')
@@ -49,7 +62,12 @@ const AccountScreen=()=>{
     console.log('userdata ', userdata)
 
     return(
-        <View style={{backgroundColor:"#fff",flex:1}}>
+        <>
+        <StatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+        <SafeAreaView style={{backgroundColor:"#fff",flex:1,paddingBottom:35}}>
             {userdata?
             <ScrollView showsVerticalScrollIndicator={false}
             refreshControl={
@@ -93,16 +111,25 @@ const AccountScreen=()=>{
                             </View>
                         </View>
                 </View>
-                {userdata.posts.length>0?
+                {posts.length>0?
                 <View style={{marginTop:32,alignItems:"center"}}>
                 <Text style={{fontWeight:"200",fontSize:20,textAlign:"center",marginBottom:20}}>Your Posts</Text>
                 <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}}>
-                    <Image source={
+                    
+                    {
+                    posts?.map(
+                    (item)=>{
+                    return(
+                    <Image key={item.post} source={
                         {
-                            uri:"https://occ-0-395-1007.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABYxJFBDckfZw1YUEIPwyuIg43Kw_HUBLvnCcgdOlvvf5Nc90SF3HSAi5L8uLyBqjziKBY-kGD2wu2JAqVsdHVR0frb6qG26I_U5v.jpg?r=77f"
+                            uri:item.post
                         }
                     } style={{height:120,width:"30%",margin:5}}/>
-                    
+                    )
+                }
+                    )
+
+                }
                 </View>
                 </View>:<View style={{marginTop:32,alignItems:"center"}}>
                 <Text style={{fontWeight:"200",fontSize:20,textAlign:"center",marginBottom:20}}>You have not posted anything</Text>
@@ -112,7 +139,8 @@ const AccountScreen=()=>{
 }
 
         <BottomNavBar page={"AccountScreen"}/>
-        </View>
+        </SafeAreaView>
+        </>
             )
 }
 export default AccountScreen

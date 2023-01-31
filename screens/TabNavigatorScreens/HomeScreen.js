@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from "react";
-import {View,FlatList,ActivityIndicator,AsyncStorage} from "react-native";
+import {View,FlatList,ActivityIndicator,AsyncStorage, SafeAreaView, StatusBar} from "react-native";
 import BottomNavBar from "../../components/BottomNavBar";
 import FeedItems from "../../components/FeedItems";
 const datas=[
@@ -407,20 +407,35 @@ const HomeScreen=()=>{
          setUserdata(JSON.parse(data))
      }).catch(err=>alert(err))
     },[])
-     console.log("userdata",userdata)
+    console.log("userdata",userdata)
+
+    const [posts, setPosts] = useState([]);
+      useEffect(() => {
+        fetch('http://10.0.2.2:3000/getposts')
+          .then(res => res.json())
+          .then(data => setPosts(data))
+          .catch(error => console.error(error));
+      }, [posts]);
+    
      return(
- <View style={{backgroundColor:"#fff",flex:1,paddingBottom:25}}>
+        <>
+        <StatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+ <SafeAreaView  style={{backgroundColor:"#fff",flex:1,paddingBottom:25}}>
  <View style={{width:"100%"}}>
              {datas.length<1?<ActivityIndicator size={"large"} color={"#2FBBF0"}/>:
-             <FlatList data={datas} renderItem={({item,index})=>(<FeedItems username={item.username} profile_photo={item.profile_photo} feedimage={item.feedimage} likes={item.likes} comments={item.comments} key={item.id}/>)}
-             keyExtractor={(item,index)=>{return item.id.toFixed()}}
+             <FlatList data={posts} renderItem={({item,index})=>(<FeedItems username={item.username} profile_photo={item.profilepic} feeditem={item.post} comments={item.comments} postdescription={item.postdescription} likes={item.likes} key={item._id} />)}
+             
              showsVerticalScrollIndicator={false}
              />
              }
          </View>
          <BottomNavBar page={"HomeScreen"}/>
  
- </View>
+ </SafeAreaView>
+ </>
      )
  }
  export default HomeScreen

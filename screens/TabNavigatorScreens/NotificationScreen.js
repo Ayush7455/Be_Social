@@ -1,11 +1,17 @@
 import React from "react";
-import {View} from "react-native";
+import {SafeAreaView, StatusBar, View} from "react-native";
 import BottomNavBar from "../../components/BottomNavBar";
 const NotificationScreen=()=>{
     return(
-        <View style={{backgroundColor:"#fff",height:"100%"}}>
+        <>
+        <StatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+        <SafeAreaView style={{backgroundColor:"#fff",height:"100%"}}>
             <BottomNavBar page={"NotificationScreen"}/>
-        </View>
+        </SafeAreaView>
+        </>
             )
 }
 export default NotificationScreen

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {FlatList, Text,TextInput,View} from "react-native";
+import {FlatList, SafeAreaView, StatusBar, Text,TextInput,View} from "react-native";
 import ChatComponent from "../components/ChatComponent";
 const chats=[
     {
@@ -166,7 +166,12 @@ const ChatScreen=()=>{
         setFilteredData(filterData(searchInput, chats))
       }, [searchInput]);
     return (
-<View style={{backgroundColor:"#fff",flex:1}}>
+        <>
+        <StatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+<SafeAreaView style={{backgroundColor:"#fff",flex:1}}>
     <View style={{alignItems:"center"}}><TextInput value={searchInput} onChangeText={(text)=>setSearchInput(text)} placeholder={"Search Users"} placeholderTextColor={"#000"} style={{width:"95%",height:39,backgroundColor:"#F0F0F0",borderRadius:20,paddingLeft:15,marginTop:20}}/></View>
     <View style={{marginTop:10,paddingBottom:60}}>
 <FlatList
@@ -176,7 +181,8 @@ const ChatScreen=()=>{
        />
     
 </View>
-</View>
+</SafeAreaView>
+</>
         
     )
 }

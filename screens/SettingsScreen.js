@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, Text,Touchable,View} from "react-native";
+import {Image, SafeAreaView, StatusBar, Text,Touchable,View} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -21,7 +21,12 @@ const SettingsScreen=()=>{
     }
 
     return (
-        <View style={{flex:1,backgroundColor:"#fff"}}>
+        <>
+        <StatusBar
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+        <SafeAreaView style={{flex:1,backgroundColor:"#fff"}}>
             <TouchableOpacity onPress={()=>navigation.navigate("EditProfileScreen")}>
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:10,marginTop:10,borderBottomColor:"#F8F8F8",borderBottomWidth:1,height:50,padding:5}}>
                 <View style={{flexDirection:"row",alignItems:"center"}}>
@@ -78,7 +83,8 @@ const SettingsScreen=()=>{
             </View>
             </TouchableOpacity>
             <Image source={HLogo} style={{height:40,width:40,marginTop:40}}/>
-        </View>
+        </SafeAreaView>
+        </>
 
     )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider, useNativeBase } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View ,AsyncStorage} from "react-native";
+import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View ,AsyncStorage, StatusBar, SafeAreaView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../assets/images/logoh.jpeg";
    
@@ -48,8 +48,12 @@ const ChangePasswordScreen = ({email,username}) => {
 }
 
   return (
-  
-  <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
+    <>
+    <StatusBar
+    backgroundColor={"white"}
+    barStyle={"dark-content"}
+    />
+  <SafeAreaView style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
   <Image source={Logo} style={{width:50,height:50}}/>
   <View style={{width:"90%",backgroundColor:"#fff",borderRadius:10,elevation:2}}>
   
@@ -88,7 +92,8 @@ const ChangePasswordScreen = ({email,username}) => {
       </Box>
     </Center>
     </View>
-       </View>
+       </SafeAreaView>
+       </>
     )
 };
 export default ChangePasswordScreen

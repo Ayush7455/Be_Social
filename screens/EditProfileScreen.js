@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {ActivityIndicator, Image, Modal, Text,TextInput,Touchable,View,AsyncStorage} from "react-native";
+import {ActivityIndicator, Image, Modal, Text,TextInput,Touchable,View,AsyncStorage, StatusBar} from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import Success from "../assets/images/success.png";
 import {useToast,Box} from "native-base"
 import {firebase} from "../Firebase/Config";
 import * as ImagePicker from "expo-image-picker";
+import { SafeAreaView } from "react-native";
 const ModalPopup=({children,visible})=>{
     const [showModal,setShowModal]=useState(visible)
     useEffect(()=>{
@@ -109,7 +110,12 @@ const EditProfileScreen=()=>{
 
 
     return (
-        <View style={{flex:1,backgroundColor:"#fff"}}>
+      <>
+      <StatusBar
+      backgroundColor={"white"}
+      barStyle={"dark-content"}
+      />
+        <SafeAreaView style={{flex:1,backgroundColor:"#fff"}}>
             <TouchableOpacity onPress={()=>navigation.navigate("ChooseProfileImage")}>
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:10,marginTop:10,borderBottomColor:"#F8F8F8",borderBottomWidth:1,height:50,padding:5}}>
                 <View style={{flexDirection:"row",alignItems:"center"}}>
@@ -168,7 +174,8 @@ const EditProfileScreen=()=>{
           </View>
             </ModalPopup>
           </View>
-        </View>
+        </SafeAreaView>
+        </>
 
     )
 }

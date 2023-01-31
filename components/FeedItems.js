@@ -6,6 +6,274 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Cross from "../assets/images/x.png";
 import Comments from "./Comments";
+import nopic from "../assets/images/noimg.png";
+const datas=[
+  {
+      id:1,
+      username:"Naruto",
+      feedimage:"https://mms.businesswire.com/media/20130820005803/en/379599/5/Hello_Everywhere_Film_Poster.jpg",
+      profile_photo:"https://media.istockphoto.com/id/1188980757/vector/young-man-anime-style-character.jpg?s=612x612&w=0&k=20&c=uOfXeG7GdMpLqEXPDNA8KbZgEZdIDk9JhvAfIE1_D9A=",
+      likes:[
+          "Doremon",
+          "Hattori"
+      ],
+      comments:[
+          {
+          id:1,
+          username:"Doremon",
+          comment:"Nice Post",
+          },
+          {
+              id:2,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+      ]
+      
+  },
+  {
+      id:3,
+      username:"Naruto",
+      feedimage:"https://mms.businesswire.com/media/20130820005803/en/379599/5/Hello_Everywhere_Film_Poster.jpg",
+      profile_photo:"https://media.istockphoto.com/id/1188980757/vector/young-man-anime-style-character.jpg?s=612x612&w=0&k=20&c=uOfXeG7GdMpLqEXPDNA8KbZgEZdIDk9JhvAfIE1_D9A=",
+      likes:[
+          "Doremon",
+          "Hattori"
+      ],
+      comments:[
+          {
+          id:3,
+          username:"Doremon",
+          comment:"Nice Post",
+          },
+          {
+              id:4,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+      ]
+      
+  }
+  ,{
+      id:5,
+      username:"Naruto",
+      feedimage:"https://mms.businesswire.com/media/20130820005803/en/379599/5/Hello_Everywhere_Film_Poster.jpg",
+      profile_photo:"https://media.istockphoto.com/id/1188980757/vector/young-man-anime-style-character.jpg?s=612x612&w=0&k=20&c=uOfXeG7GdMpLqEXPDNA8KbZgEZdIDk9JhvAfIE1_D9A=",
+      likes:[
+          "Doremon",
+          "Hattori"
+      ],
+      comments:[
+          {
+          id:5,
+          username:"Doremon",
+          comment:"Nice Post",
+          },
+          {
+              id:6,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+      ]
+      
+  }
+  ,{
+      id:6,
+      username:"Naruto",
+      feedimage:"https://mms.businesswire.com/media/20130820005803/en/379599/5/Hello_Everywhere_Film_Poster.jpg",
+      profile_photo:"https://media.istockphoto.com/id/1188980757/vector/young-man-anime-style-character.jpg?s=612x612&w=0&k=20&c=uOfXeG7GdMpLqEXPDNA8KbZgEZdIDk9JhvAfIE1_D9A=",
+      likes:[
+          "Doremon",
+          "Hattori"
+      ],
+      comments:[
+          {
+          id:7,
+          username:"Doremon",
+          comment:"Nice Post",
+          },
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          ,
+          {
+              id:8,
+              username:"Hattori",
+              comment:"Feel the feed and kill the weed",
+
+          }
+          
+      ]
+      
+  }
+]
 const ModalPopup=({children,visible})=>{
     const [showModal,setShowModal]=useState(visible)
     useEffect(()=>{
@@ -33,9 +301,10 @@ const ModalPopup=({children,visible})=>{
 const FeedItems=({
     username,
     profile_photo, 
-    feedimage,
-    likes ,
-    comments
+    postdescription,
+    feeditem,
+    comments,
+    likes
 
 })=>{
         const[liked,setLiked]=useState(false)
@@ -49,7 +318,10 @@ const FeedItems=({
                     <View style={{width:"90%",display:"flex",justifyContent:"space-between",flexDirection:"row",
                 alignItems:"center"}}>
                     <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-                        <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={{uri:profile_photo}}/>
+                      {profile_photo?
+                        <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={{uri:profile_photo}}/>:
+                        <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={nopic}/>
+                      }
                         
                         <View style={{marginLeft:15}}>
                         <Text style={{fontSize:16,fontWeight:"bold"}}>{username}</Text>
@@ -70,10 +342,14 @@ const FeedItems=({
                     style={{width:"90%",height:200,
                 backgroundColor:"rgba(0,0,0,0.06",marginTop:20,borderRadius:10}}
                     source={{
-                        uri:feedimage
+                        uri:feeditem
                     }}
                     />
-                   
+                    {
+                      postdescription&&<View style={{alignSelf:"flex-start",marginLeft:25,marginTop:10}}>
+                      <Text style={{color:"#267FFF"}}>{postdescription}</Text>
+                      </View>
+                    }
                    {liked? <View style={{marginVertical:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
                 
                         <AntDesign name="like1" size={24} color="#267FFF" onPress={()=>{setLiked(false)}}/>
@@ -83,7 +359,7 @@ const FeedItems=({
                      
                         <AntDesign name="like2" size={24} color="#267FFF" onPress={()=>setLiked(true)}/>
                        
-                        <Text style={{marginLeft:5,color:"#267FFF"}}> {likes.length}</Text>
+                        <Text style={{marginLeft:5,color:"#267FFF"}}>{likes.length}</Text>
                         </View>
                    
                    }
@@ -102,7 +378,6 @@ const FeedItems=({
               <View style={{padding:10}}>
                    
               <FlatList data={comments} renderItem={({item,index})=>(<Comments username={item.username} content={item.comment} key={item.id}/>)}
-            keyExtractor={(item,index)=>{return item.id.toFixed()}}
             showsVerticalScrollIndicator={false}/>
               </View>
             </ModalPopup>

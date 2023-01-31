@@ -10,6 +10,8 @@ import Logo from "../assets/images/logo.jpeg";
 import { Feather } from '@expo/vector-icons';
 import {firebase} from "../Firebase/Config";
 import * as ImagePicker from "expo-image-picker";
+import { StatusBar } from "react-native";
+import { SafeAreaView } from "react-native";
 
 const ChooseProfileImage= () => {
   const navigation=useNavigation()
@@ -24,14 +26,14 @@ const ChooseProfileImage= () => {
             aspect: [1, 1],
             quality: 1,
         })
-        
+        // console.log(result)
 
 
-        if (!result.cancelled) {
-            const source = { uri: result.uri };
+        if (!result.canceled) {
+            const source = {uri: result.assets[0].uri};
             setImage(source);
 
-            const response = await fetch(result.uri);
+            const response = await fetch(result.assets[0].uri);
             const blob = await response.blob();
             const filename = result.uri.substring(result.uri);
 
@@ -39,7 +41,7 @@ const ChooseProfileImage= () => {
             const snapshot = await ref.put(blob);
             const url = await snapshot.ref.getDownloadURL();
 
-           
+            // console.log(url)
             return url
         }
         else {
@@ -47,50 +49,51 @@ const ChooseProfileImage= () => {
         }
     }
 
-    const handleUpload = () => {
-        
-        AsyncStorage.getItem('user')
-            .then(data => {
-                setLoading(true)
-
-                pickImage().then(url => {
-                    fetch('https://kind-erin-shrimp-vest.cyclic.app/setprofilepic', {
-                        method: 'post',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            email: JSON.parse(data).user.email,
-                            profilepic: url
-                        })
-                    })
-                        .then(res => res.json()).then(
-                            data => {
-                                if (data.message === "Profile picture updated successfully") {
-                                    setLoading(false)
-                                    alert('Profile picture updated successfully')
-                                    navigation.navigate('EditProfileScreen')
-                                }
-                                else if (data.error === "Invalid Credentials") {
-                                    alert('Invalid Credentials')
-                                    setLoading(false)
-                                    navigation.navigate('LoginScreen')
-                                }
-                                else {
-                                    setLoading(false)
-                                    alert("Please Try Again");
-                                }
-                            }
-                        )
-                        .catch(err => {
-                            console.log(err)
-                        })
-
+    const handleUpload = async () => {
+        const data = await AsyncStorage.getItem('user');
+        setLoading(true);
+    
+        const url = await pickImage();
+        if (!url) {
+            setLoading(false);
+            return;
+        }
+        try {
+            const response = await fetch('https://kind-erin-shrimp-vest.cyclic.app/setprofilepic', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: JSON.parse(data).user.email,
+                    profilepic: url
                 })
-            })
+            });
+            const json = await response.json();
+            if (json.message === "Profile picture updated successfully") {
+                setLoading(false);
+                alert('Profile picture updated successfully');
+                navigation.navigate('EditProfileScreen');
+            } else if (json.error === "Invalid Credentials") {
+                alert('Invalid Credentials');
+                setLoading(false);
+                navigation.navigate('LoginScreen');
+            } else {
+                setLoading(false);
+                alert("Please Try Again");
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
   return (
-    <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
+    <>
+    <StatusBar
+    backgroundColor={"white"}
+    barStyle={"dark-content"}
+    
+    />
+    <SafeAreaView style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
             <Image source={Logo} style={{width:50,height:50}}/>
             <View style={{width:"90%",backgroundColor:"#fff",borderRadius:10,elevation:2}}>
   <Center w="100%">
@@ -116,7 +119,8 @@ const ChooseProfileImage= () => {
       </Box>
     </Center>
     </View>
-       </View>
+       </SafeAreaView>
+       </>
   )
 };
 export default ChooseProfileImage

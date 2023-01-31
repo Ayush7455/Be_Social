@@ -1,5 +1,5 @@
 import React from "react";
-import {Text,View} from "react-native";
+import {Text,TouchableOpacity,View} from "react-native";
 import {FontAwesome5} from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -11,16 +11,32 @@ const BottomNavBar=({page})=>{
     return(
         <View style={{position:"absolute",bottom:0,width:"100%",height:50,alignItems:"center",zIndex:100,borderTopColor:"#F8F8F8",borderTopWidth:1,flexDirection:"row",justifyContent:"space-around",backgroundColor:"#fff"}}>
             {page==="HomeScreen"?
-            <FontAwesome5 name="home" size={20} color={"#267FFF"} onPress={()=>navigation.navigate("HomeScreen")}/>:<FontAwesome5 name="home" size={20} color={"gray"} onPress={()=>navigation.navigate("HomeScreen")}/>
+            <TouchableOpacity onPress={()=>navigation.navigate("HomeScreen")}>
+            <FontAwesome5 name="home" size={20} color={"#267FFF"} />
+            </TouchableOpacity>:
+            <TouchableOpacity onPress={()=>navigation.navigate("HomeScreen")}><FontAwesome5 name="home" size={20} color={"gray"} />
+            </TouchableOpacity>
 }
 {page==="SearchScreen"?
-            <FontAwesome5 name="search" size={20} color={"#267FFF"} onPress={()=>navigation.navigate("SearchScreen")}/>:<FontAwesome5 name="search" size={20} color={"gray"} onPress={()=>navigation.navigate("SearchScreen")}/>
+    <TouchableOpacity  onPress={()=>navigation.navigate("SearchScreen")}>
+            <FontAwesome5 name="search" size={20} color={"#267FFF"}/></TouchableOpacity>:
+            <TouchableOpacity onPress={()=>navigation.navigate("SearchScreen")}>
+            <FontAwesome5 name="search" size={20} color={"gray"} />
+            </TouchableOpacity>
 }
 {page==="NotificationScreen"?
-            <Ionicons name="ios-notifications" size={20} color={"#267FFF"} onPress={()=>navigation.navigate("NotificationScreen")}/>:<Ionicons name="ios-notifications" size={20} color={"gray"} onPress={()=>navigation.navigate("NotificationScreen")}/>
+    <TouchableOpacity onPress={()=>navigation.navigate("NotificationScreen")}>
+            <Ionicons name="ios-notifications" size={20} color={"#267FFF"} />
+            </TouchableOpacity>:
+            <TouchableOpacity onPress={()=>navigation.navigate("NotificationScreen")}><Ionicons name="ios-notifications" size={20} color={"gray"} />
+            </TouchableOpacity>
 }
             {page==="AccountScreen"?
-            <FontAwesome5 name="user-alt" size={20} color={"#267FFF"} onPress={()=>navigation.navigate("AccountScreen")}/>:<FontAwesome5 name="user-alt" size={20} color={"gray"} onPress={()=>navigation.navigate("AccountScreen")}/>
+            <TouchableOpacity onPress={()=>navigation.navigate("AccountScreen")}>
+            <FontAwesome5 name="user-alt" size={20} color={"#267FFF"} />
+            </TouchableOpacity>:
+            <TouchableOpacity onPress={()=>navigation.navigate("AccountScreen")}><FontAwesome5 name="user-alt" size={20} color={"gray"} />
+            </TouchableOpacity>
 }
         </View>
     )

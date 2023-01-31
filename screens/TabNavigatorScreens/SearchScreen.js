@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {View,FlatList,TextInput} from "react-native";
+import {View,FlatList,TextInput, ActivityIndicator,Text,ScrollView, SafeAreaView, StatusBar} from "react-native";
 import UserItem from "../../components/UserItem";
 import { useFocusEffect } from '@react-navigation/native';
 import BottomNavBar from "../../components/BottomNavBar";
+
 const datas=[
     {
         id:1,
@@ -403,38 +404,80 @@ const users=[
 ]
 const SearchScreen=()=>{
     const[searchInput,setSearchInput]=useState("")
-    const [filteredData, setFilteredData] = useState([]);
-    const filterData = (searchInput, users) => {
-        if(searchInput==""){
-            return null
+    const [loading, setLoading] = useState(false)
+    const [data, setData] = useState([])
+    const [error, setError] = useState(null)
+    useEffect(() => {
+    const getallusers = async () => {
+        if (searchInput.length > 0) {
+            setLoading(true)
+            fetch('https://kind-erin-shrimp-vest.cyclic.app/searchuser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ keyword: searchInput })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        setData([])
+                        setError(data.error)
+                        setLoading(false)
+                    }
+                    else if (data.message == 'User Found') {
+                        setError(null)
+                        setData(data.user)
+                        setLoading(false)
+                    }
+                })
+                .catch(err => {
+                    setData([])
+                    setLoading(false)
+                })
         }
-        else{
-        return users.filter(item => {
-          return item.username.toLowerCase().includes(searchInput.toLowerCase())
-        });
+        else {
+            setData([])
+            setError(null)
+        }
     }
-      };
+    getallusers()
+
+}, [searchInput])
+
       useFocusEffect(
         useCallback(() => {
           setSearchInput("");
         }, [])
       );
-    useEffect(() => {
-        setFilteredData(filterData(searchInput, users))
-      }, [searchInput]);
     return (
-<View style={{backgroundColor:"#fff",flex:1}}>
+        <>
+        <StatusBar
+        
+        backgroundColor={"white"}
+        barStyle={"dark-content"}
+        />
+<SafeAreaView style={{backgroundColor:"#fff",flex:1}}>
     <View style={{alignItems:"center"}}><TextInput value={searchInput} onChangeText={(text)=>setSearchInput(text)} placeholder={"Search Users"} placeholderTextColor={"#000"} style={{width:"95%",height:39,backgroundColor:"#F0F0F0",borderRadius:20,paddingLeft:15,marginTop:20}}/></View>
+    {loading?<ActivityIndicator style={{marginTop:10}} color={"#267FFF"}/>:
+    <>
+    {error?<Text style={{textAlign:"center",marginTop:10}}>{error}</Text>:
     <View style={{marginTop:10,paddingBottom:60}}>
 <FlatList
-        data={filteredData}
-       renderItem={({item})=><UserItem username={item.username} profile_image={item.profile_image} key={item.username}/>}
+        data={data}
+       renderItem={({item})=><UserItem user={item}/>}
        showsVerticalScrollIndicator={false}
        />
+      
     
 </View>
+    }
+    </>
+    
+}
  <BottomNavBar page={"SearchScreen"}/>
-</View>
+</SafeAreaView>
+</>
     )
 }
 export default SearchScreen

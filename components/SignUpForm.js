@@ -16,7 +16,7 @@ const SignUpForm = () => {
     }
     else {
         setLoading(true)
-        fetch('http://10.0.2.2:3000/verify', {
+        fetch('https://kind-erin-shrimp-vest.cyclic.app/verify', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'

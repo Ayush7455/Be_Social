@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider, useNativeBase } from "native-base";
 import { MaterialIcons } from '@expo/vector-icons'; 
-import { Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Modal, Pressable, SafeAreaView, StatusBar, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Success from "../assets/images/success.png";
 import Logo from "../assets/images/logo.jpeg";
@@ -14,7 +14,12 @@ const AccountConfirmationScreen = () => {
   
   
   return (
-  <View style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
+    <>
+    <StatusBar
+    backgroundColor={"white"}
+    barStyle={"dark-content"}
+    />
+  <SafeAreaView style={{justifyContent:"center",alignItems:"center",backgroundColor:"#fff",width:"100%",height:"100%",backgroundColor:"#F2F6FF"}}>
   <Image source={Logo} style={{width:50,height:50}}/>
   
 <View style={{width:"90%",backgroundColor:"#fff",borderRadius:10,elevation:2}}>
@@ -44,7 +49,8 @@ const AccountConfirmationScreen = () => {
       </Box>
     </Center>
     </View>
-       </View>
+       </SafeAreaView>
+       </>
     )
 };
 export default AccountConfirmationScreen
