@@ -3,20 +3,28 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {useToast} from "native-base"
 
 const VerificationCodeForgotForm = ({
   useremail,
   userVerificationCode
 }) => {
   const navigation=useNavigation()
+  const toast = useToast();
   const [verificationCode,setVerificationCode]=useState("")
   const handleVerificationCode = () => {
 
     if (verificationCode != userVerificationCode) {
-        alert('Invalid Verification Code')
+      toast.show({
+        render: () => {
+          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                 Invalid verification code
+                </Box>;
+        }
+      })
+
     }
     else {
-        alert('Verification Code Matched')
         navigation.navigate("ForgotPasswordPasswordScreen", { email: useremail })
     }
 

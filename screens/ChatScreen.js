@@ -1,189 +1,148 @@
 import React, { useEffect, useState } from "react";
-import {FlatList, SafeAreaView, StatusBar, Text,TextInput,View} from "react-native";
+import {FlatList, SafeAreaView, StatusBar, Text,TextInput,View,AsyncStorage,StyleSheet} from "react-native";
 import ChatComponent from "../components/ChatComponent";
-const chats=[
-    {
-        username:"Yorishobu",
-        lastmessage:"hello",
-        time:"12:00",
-        profile_image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZWr4HVTvL9Mizj4dpW3qfR-oyFGpTXx6wXg&usqp=CAU"
+import {ScrollView, useToast} from "native-base"
+import {Ionicons} from "@expo/vector-icons";
 
-    },
-    {
-        username:"Yorinabu",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabu",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabus",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusaaaaaaaaaaaaaaaaaaaaaaaaa",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabusasdsd",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabufds",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabudsawaw",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    },
-    {
-        username:"Yorinabuwas",
-        lastmessage:"When did you came back from USA to Tokyo",
-        time:"1:00",
-        profile_image:"https://pyxis.nymag.com/v1/imgs/df1/bdf/5c012eec9eef195ccdc36e79fc1da9e344-anime-lede.rsquare.w700.jpg"
-
-    }
-
-
-
-]
 
 const ChatScreen=()=>{
     const[searchInput,setSearchInput]=useState("")
+    const toast = useToast();
+
     const [filteredData, setFilteredData] = useState(chats);
-    const filterData = (searchInput, chats) => {
-        return chats.filter(item => {
-          return item.username.toLowerCase().includes(searchInput.toLowerCase())||item.lastmessage.toLowerCase().includes(searchInput.toLowerCase());
-        });
-      };
+    const [chats, setChats] = useState(null)
+    const [userdata, setUserdata] = useState(null)
     useEffect(() => {
-        setFilteredData(filterData(searchInput, chats))
-      }, [searchInput]);
+        loadchats()
+    }, [])
+    const loadchats = () => {
+        AsyncStorage.getItem('user')
+            .then(data => {
+                setUserdata(JSON.parse(data))
+                let userid = JSON.parse(data).user._id;
+                console.log(userid)
+                fetch('https://kind-erin-shrimp-vest.cyclic.app/getusermessages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userid:userid
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log(data)
+                        data.sort((a, b) => {
+                            if(a.date > b.date){
+                                return -1
+                            }
+                        })
+                        setChats(data)
+                    })
+                    .catch(err => {
+                        toast.show({
+                            render: () => {
+                              return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                      Something went wrong
+                                    </Box>;
+                            }
+                          })
+                        setChats([])
+                    })
+            })
+            .catch(err => alert(err))
+    }
+    console.log(chats)
+    // const filterData = (searchInput, chats) => {
+    //     if(chats!=null){
+    //     return chats.filter(item => {
+    //       return item.username.toLowerCase().includes(searchInput.toLowerCase())||item.lastmessage.toLowerCase().includes(searchInput.toLowerCase());
+    //     });
+        
+    // }
+    // else{
+    //     return null
+    // }
+    //   };
+    // useEffect(() => {
+    //     setFilteredData(filterData(searchInput, chats))
+    //   }, [searchInput]);
     return (
         <>
         <StatusBar
         backgroundColor={"white"}
         barStyle={"dark-content"}
         />
-<SafeAreaView style={{backgroundColor:"#fff",flex:1}}>
+        <SafeAreaView style={{backgroundColor:"#fff",flex:1}}>
     <View style={{alignItems:"center"}}><TextInput value={searchInput} onChangeText={(text)=>setSearchInput(text)} placeholder={"Search Users"} placeholderTextColor={"#000"} style={{width:"95%",height:39,backgroundColor:"#F0F0F0",borderRadius:20,paddingLeft:15,marginTop:20}}/></View>
-    <View style={{marginTop:10,paddingBottom:60}}>
-<FlatList
-        data={filteredData}
-       renderItem={({item})=><ChatComponent username={item.username} lastmessage={item.lastmessage} time={item.time} profile_image={item.profile_image} key={item.username}/>}
-       showsVerticalScrollIndicator={false}
-       />
-    
-</View>
-</SafeAreaView>
-</>
-        
+        <ScrollView>
+
+        <View style={{marginTop:10,paddingBottom:60}}>
+                {
+                    chats!==null && chats.filter(
+                        (chat) => {
+                            if (searchInput == '') {
+                                return chat
+                            }
+                            else if (
+                                chat?.fusername?.toLowerCase().includes(searchInput.toLowerCase())
+                                ||
+                                chat?.lastmessage?.toLowerCase().includes(searchInput.toLowerCase())
+                            ) {
+                                return chat
+                            }
+                        }
+                    ).map((chat) => {
+                        return <ChatComponent key={chat.fuserid} chat={chat}/>
+                    })
+                }
+            </View>
+        </ScrollView>
+        </SafeAreaView>
+        </>
     )
 }
 export default ChatScreen
+
+const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'black',
+    },
+    gohomeicon: {
+        position: 'absolute',
+        top: 15,
+        left: 20,
+        zIndex: 10,
+        color: 'white',
+        fontSize: 30,
+    },
+    c1: {
+        width: '95%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 30,
+        backgroundColor: '#111111',
+        alignSelf: 'center',
+        borderRadius: 20,
+        borderColor: 'gray',
+        borderWidth: 1,
+    },
+    searchbar: {
+        width: '90%',
+        backgroundColor: 'white',
+        borderRadius: 30,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 10,
+        fontSize: 18,
+    },
+    c2: {
+        width: '100%',
+        padding: 10,
+    }
+
+})

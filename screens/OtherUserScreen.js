@@ -6,13 +6,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import NoImage from "../assets/images/noimg.png";
 import { AntDesign } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native";
+import {useToast} from "native-base"
 const OtherUserScreen=({route})=>{
     const width=Dimensions.get("window").width
+    const toast = useToast();
     const navigation=useNavigation()
     const [userdata, setUserdata] = useState(null)
     const [issameuser, setIssameuser] = useState(false)
     const [posts,setPosts]=useState([])
-      
     
         const { user } = route.params
 
@@ -55,12 +56,18 @@ const OtherUserScreen=({route})=>{
                 })
                 .catch(err => {
                     // console.log(err)
-                    alert('Something Went Wrong')
+                    toast.show({
+                        render: () => {
+                          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                  Something went wrong
+                                </Box>;
+                        }
+                      })
                     navigation.navigate('SearchScreen')
                 })
         }
         useEffect(() => {
-            fetch('http://10.0.2.2:3000/getuserposts',{
+            fetch('https://kind-erin-shrimp-vest.cyclic.app/getuserposts',{
                                 method:"POST",
                                 headers:{
                                     "Content-Type":"application/json"
@@ -70,7 +77,7 @@ const OtherUserScreen=({route})=>{
                             })
           .then(res => res.json())
           .then(data => setPosts(data))
-          .catch(error => console.error(error));
+          .catch(error => console.log(error));
             loaddata()
             
         }, [])
@@ -97,7 +104,13 @@ const OtherUserScreen=({route})=>{
                     setIsfollowing(true)
                 }
                 else {
-                    alert('Something Went Wrong')
+                    toast.show({
+                        render: () => {
+                          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                  Something went wrong
+                                </Box>;
+                        }
+                      })
                 }
             })
     }
@@ -188,7 +201,7 @@ const OtherUserScreen=({route})=>{
                     </View>
                     {!issameuser&&
                     <View style={{backgroundColor:"#41444B",position:"absolute",top:30,left:width-300,width:40,height:40,borderRadius:20,alignItems:"center",justifyContent:"center"}}>
-                        <MaterialIcons name="chat" size={18} color="#DFD8C8" onPress={()=>navigation.navigate("ChatRoomScreen",{fuseremail:userdata.email,fuserid:userdata._id})}></MaterialIcons>
+                        <MaterialIcons name="chat" size={18} color="#DFD8C8" onPress={()=>navigation.navigate("ChatRoomScreen",{fusername:userdata.username,fuseremail:userdata.email,fuserid:userdata._id})}></MaterialIcons>
                        
                     </View>
 }

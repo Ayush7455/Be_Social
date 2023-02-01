@@ -10,10 +10,12 @@ import Logo from "../assets/images/logo.jpeg";
 import { Feather } from '@expo/vector-icons';
 import {firebase} from "../Firebase/Config";
 import * as ImagePicker from "expo-image-picker";
+import {useToast} from "native-base"
 
 const AddPostsScreen=()=>{
     const[loading1,setLoading1]=useState(false)
     const[loading2,setLoading2]=useState(false)
+    const toast = useToast();
     const[post,setPost]=useState(null)
     const navigation=useNavigation()
     const [postdescription,setPostDescription]=useState("")
@@ -28,13 +30,13 @@ const AddPostsScreen=()=>{
         })
         // console.log(result)
 
-        if (!result.cancelled) {
-            const source = { uri: result.uri };
+        if (!result.canceled) {
+            const source = { uri: result.assets[0].uri };
 
 
-            const response = await fetch(result.uri);
+            const response = await fetch(result.assets[0].uri);
             const blob = await response.blob();
-            const filename = result.uri.substring(result.uri);
+            const filename = result.assets[0].uri.substring(result.assets[0].uri);
 
             const ref = firebase.storage().ref().child(filename);
             const snapshot = await ref.put(blob);
@@ -72,17 +74,36 @@ const AddPostsScreen=()=>{
                         .then(res => res.json())
                         .then(data => {
                             if (data.message == 'Post added successfully') {
-                                alert('Post added successfully')
+                                toast.show({
+                                    render: () => {
+                                      return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                              Post added successfully
+                                            </Box>;
+                                    }
+                                  })
+  
                                 setLoading2(false)
                                 navigation.navigate('HomeScreen')
                             }
                             else {
-                                alert('Something went wrong, please try again')
+                                toast.show({
+                                    render: () => {
+                                      return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                              Something went wrong
+                                            </Box>;
+                                    }
+                                  })
                                 setLoading2(false)
                             }
                         })
                 }).catch((err)=>{
-                    alert("Something went wrong")
+                    toast.show({
+                        render: () => {
+                          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                  Something went wrong
+                                </Box>;
+                        }
+                      })
                     setLoading2(false)
                 })
         }

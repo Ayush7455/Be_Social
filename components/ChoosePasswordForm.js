@@ -3,8 +3,11 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {useToast} from "native-base"
    
 const ChoosePasswordForm = ({email,username}) => {
+  const toast = useToast();
+
   const navigation=useNavigation()
   const [password,setPassword]=useState("")
   const [confirmPassword,setConfirmPassword]=useState("")
@@ -28,12 +31,25 @@ const ChoosePasswordForm = ({email,username}) => {
                 data => {
                     if (data.message === "User Registered Successfully") {
                         setLoading(false)
-                        alert(data.message);
+                        toast.show({
+                          render: () => {
+                            return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                   {data.message}
+                                  </Box>;
+                          }
+                        })
+
                         navigation.navigate('AccountConfirmationScreen')
                     }
                     else {
                         setLoading(false)
-                        alert("Please try again");
+                        toast.show({
+                          render: () => {
+                            return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                   Please try again
+                                  </Box>;
+                          }
+                        })
                     }
                 }
             )

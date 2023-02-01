@@ -298,18 +298,11 @@ const ModalPopup=({children,visible})=>{
     )
   }
   
-const FeedItems=({
-    username,
-    profile_photo, 
-    postdescription,
-    feeditem,
-    comments,
-    likes
-
-})=>{
+const FeedItems=({details})=>{
         const[liked,setLiked]=useState(false)
         const [commentsSelected,setcommentsSelected]=useState(false)
         const [visible,setVisible]=useState(false)
+        
 
     return (
              
@@ -318,13 +311,13 @@ const FeedItems=({
                     <View style={{width:"90%",display:"flex",justifyContent:"space-between",flexDirection:"row",
                 alignItems:"center"}}>
                     <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-                      {profile_photo?
-                        <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={{uri:profile_photo}}/>:
+                      {details.profilepic?
+                        <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={{uri:details.profilepic}}/>:
                         <Image style={{backgroundColor:"rgba(0,0,0,0.06)",width:50,height:50,borderRadius:50}} source={nopic}/>
                       }
                         
                         <View style={{marginLeft:15}}>
-                        <Text style={{fontSize:16,fontWeight:"bold"}}>{username}</Text>
+                        <Text style={{fontSize:16,fontWeight:"bold"}}>{details.username}</Text>
                         </View>
                         </View>
                     <View style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
@@ -342,12 +335,12 @@ const FeedItems=({
                     style={{width:"90%",height:200,
                 backgroundColor:"rgba(0,0,0,0.06",marginTop:20,borderRadius:10}}
                     source={{
-                        uri:feeditem
+                        uri:details.post
                     }}
                     />
                     {
-                      postdescription&&<View style={{alignSelf:"flex-start",marginLeft:25,marginTop:10}}>
-                      <Text style={{color:"#267FFF"}}>{postdescription}</Text>
+                      details.postdescription&&<View style={{alignSelf:"flex-start",marginLeft:25,marginTop:10}}>
+                      <Text style={{color:"#267FFF"}}>{details.postdescription}</Text>
                       </View>
                     }
                    {liked? <View style={{marginVertical:15,marginLeft:25,flexDirection:"row",alignSelf:"flex-start",alignItems:"center"}}>
@@ -359,7 +352,7 @@ const FeedItems=({
                      
                         <AntDesign name="like2" size={24} color="#267FFF" onPress={()=>setLiked(true)}/>
                        
-                        <Text style={{marginLeft:5,color:"#267FFF"}}>{likes.length}</Text>
+                        <Text style={{marginLeft:5,color:"#267FFF"}}>{details.likes.length}</Text>
                         </View>
                    
                    }
@@ -377,7 +370,7 @@ const FeedItems=({
               </View>
               <View style={{padding:10}}>
                    
-              <FlatList data={comments} renderItem={({item,index})=>(<Comments username={item.username} content={item.comment} key={item.id}/>)}
+              <FlatList data={details.comments} renderItem={({item,index})=>(<Comments username={item.username} content={item.comment} key={item.id}/>)}
             showsVerticalScrollIndicator={false}/>
               </View>
             </ModalPopup>

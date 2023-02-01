@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { NativeBaseProvider } from "native-base"
+import { useState,useEffect } from 'react';
+import {AsyncStorage} from "react-native";
 import { StyleSheet, Text, View } from 'react-native';
 import AccountHeader from './components/AccountHeader';
 import ChatRoomHeader from './components/ChatRoomHeader';
@@ -34,22 +36,23 @@ import VerificationCodeScreen from './screens/VerificationCodeScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const config={
-    animation:"spring",
-    config:{
-      stiffness:1000,
-      damping:50,
-      mass:3,
-      overshootClamping: false,
-      restDisplacementThreshold:0.01,
-      restSpeedThreshold:0.01,
-    }
-  }
+  const [userdata,setUserdata]=useState(null)
+    useEffect(()=>{
+     AsyncStorage.getItem("user").then(data=>{
+         setUserdata(JSON.parse(data))
+     }).catch(err=>console.log(err))
+    },[])
+
   return (
     <NativeBaseProvider>
     <NavigationContainer>
-    <Stack.Navigator initialRouteName="HomeScreen">
+    <Stack.Navigator>
+
+      {userdata?<Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerTitle:HomeHeader,headerShadowVisible:false}}/>:
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />
+  }
+  {userdata?<Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}} />:<Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerTitle:HomeHeader,headerShadowVisible:false}}/>
+  }
       <Stack.Screen name="SignUpScreen" component={SignUpScreen}options={{headerShown:false}} />
       <Stack.Screen name="VerificationCodeScreen" component={VerificationCodeScreen}options={{headerShown:false}} />
       <Stack.Screen name="ChooseUserNameScreen" component={ChooseUserNameScreen} options={{headerShown:false}} />
@@ -61,7 +64,6 @@ export default function App() {
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} options={{headerTitle:"Settings"}}/>
       <Stack.Screen name="ChoosePasswordScreen" component={ChoosePasswordScreen} options={{headerShown:false}}/>
       <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerTitle:AccountHeader,headerShadowVisible:false,headerBackVisible:false}}/>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerTitle:HomeHeader,headerShadowVisible:false}}/>
       <Stack.Screen name="NotificationScreen" component={NotificationScreen} options={{headerShadowVisible:false,headerTitle:TabHeader,headerBackVisible:false}}/>
       <Stack.Screen name="SearchScreen" component={SearchScreen} options={{headerShadowVisible:false,headerTitle:TabHeader,headerBackVisible:false}}/>
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} options={{headerShown:false}}/>

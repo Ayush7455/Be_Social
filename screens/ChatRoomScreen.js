@@ -9,12 +9,12 @@ import nopic from '../assets/images/noimg.png'
 import io from 'socket.io-client'
 import {SimpleLineIcons,Feather,MaterialCommunityIcons,AntDesign,Ionicons } from "@expo/vector-icons"
 import { SafeAreaView } from 'react-native';
-const socket = io('http://192.168.30.72:3001')
+const socket = io('https://192.168.30.72:3001')
 
 
 const MessagePage = ({ navigation, route }) => {
 
-    const { fuseremail, fuserid } = route.params;
+    const { fusername,fuseremail, fuserid } = route.params;
 
     const [ouruserdata, setOuruserdata] = React.useState(null);
     const [fuserdata, setFuserdata] = React.useState(null);
@@ -24,15 +24,16 @@ const MessagePage = ({ navigation, route }) => {
     const [chat, setChat] = React.useState([]);
 
     // OUR ID & ROOM ID FOR SOCKET.IO
+useEffect(()=>{
+    loaddata()
+},[chat])
+   
 
-    useEffect(() => {
-      loaddata()
-    },[chat])
 
     useEffect(() => {
         socket.on('receive_message', (data) => {
             console.log('recieved message - ', data)
-            
+            loadMessages(roomid)
         })
     },[socket])
 
@@ -126,7 +127,19 @@ const MessagePage = ({ navigation, route }) => {
         }).then(res => res.json())
             .then(data => {
                 if (data.message == 'Message saved successfully') {
-
+                    fetch('https://kind-erin-shrimp-vest.cyclic.app/setusermessages', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ fusername:fusername,ouruserid:userid,fuserid:fuserid,lastmessage:currentmessage,roomid:roomid })
+                            }).then(res=>res.json()).then(data=>{
+                                if(data.message=="Message saved successfully"){
+                                }
+                                else{
+                                    alert("Error")
+                                }
+                            }).catch(err=>console.log(err))
                     socket.emit('send_message', messagedata)
                     loadMessages(roomid)
                     console.log('message sent')
@@ -209,7 +222,7 @@ const MessagePage = ({ navigation, route }) => {
                         )
                     })
                 }
-            </ScrollView>:<View></View>
+            </ScrollView>:<ActivityIndicator/>
             }
     
 

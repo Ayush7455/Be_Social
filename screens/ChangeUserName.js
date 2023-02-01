@@ -7,8 +7,10 @@ import Success from "../assets/images/success.png";
 import Cross from "../assets/images/x.png";
 import { FontAwesome } from '@expo/vector-icons';
 import Logo from "../assets/images/logo.jpeg";
+import {useToast} from "native-base"
 
 const ChangeUserName= () => {
+    const toast = useToast();
   const [username,setUserName]=useState("")
   const [loading,setLoading]=useState(false)
   const navigation=useNavigation()
@@ -37,27 +39,61 @@ const ChangeUserName= () => {
                             data => {
                                 if (data.message === "Username Updated Successfully") {
                                     setLoading(false)
-                                    alert('Username has been set successfully')
+                                    toast.show({
+                                        render: () => {
+                                          return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                                  User name has been changed successfully
+                                                </Box>;
+                                        }
+                                      })
                                     navigation.navigate('EditProfileScreen')
                                 }
                                 else if (data.error === "Invalid Credentials") {
-                                    alert('Invalid Credentials')
+                                    toast.show({
+                                        render: () => {
+                                          return <Box 
+                                          backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                                 Invalid Credentials
+                                                </Box>;
+                                        }
+                                      })
                                     setLoading(false)
                                     navigation.navigate('LoginScreen')
                                 }
                                 else {
                                     setLoading(false)
-                                    alert("Username not available");
+                                    toast.show({
+                                        render: () => {
+                                          return <Box 
+                                          backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                                Username not available
+                                                </Box>;
+                                        }
+                                      })
                                 }
                             }
                         )
                         .catch(err => {
-                            alert('Something went wrong')
+                            toast.show({
+                                render: () => {
+                                  return <Box 
+                                  backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                        Something went wrong
+                                        </Box>;
+                                }
+                              })
                             setLoading(false)
                         })
                 })
                 .catch(err => {
-                    alert('Something went wrong')
+                    toast.show({
+                        render: () => {
+                          return <Box 
+                          backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                Something went wrong
+                                </Box>;
+                        }
+                      })
                     setLoading(false)
                 }
                 )

@@ -12,8 +12,12 @@ import {firebase} from "../Firebase/Config";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "react-native";
 import { SafeAreaView } from "react-native";
+import {useToast} from "native-base"
+
+
 
 const ChooseProfileImage= () => {
+    const toast = useToast();
   const navigation=useNavigation()
   const [image, setImage] = useState(null);
 
@@ -35,7 +39,7 @@ const ChooseProfileImage= () => {
 
             const response = await fetch(result.assets[0].uri);
             const blob = await response.blob();
-            const filename = result.uri.substring(result.uri);
+            const filename = result.assets[0].uri.substring(result.assets[0].uri);
 
             const ref = firebase.storage().ref().child(filename);
             const snapshot = await ref.put(blob);
@@ -72,15 +76,34 @@ const ChooseProfileImage= () => {
             const json = await response.json();
             if (json.message === "Profile picture updated successfully") {
                 setLoading(false);
-                alert('Profile picture updated successfully');
+                toast.show({
+                    render: () => {
+                      return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                             Profile picture updated successfully
+                            </Box>;
+                    }
+                  })
+                
                 navigation.navigate('EditProfileScreen');
             } else if (json.error === "Invalid Credentials") {
-                alert('Invalid Credentials');
+                toast.show({
+                    render: () => {
+                      return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                             Invalid Credentials
+                            </Box>;
+                    }
+                  })
                 setLoading(false);
                 navigation.navigate('LoginScreen');
             } else {
                 setLoading(false);
-                alert("Please Try Again");
+                toast.show({
+                    render: () => {
+                      return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                             Please try again
+                            </Box>;
+                    }
+                  })
             }
         } catch (err) {
             console.log(err);

@@ -4,8 +4,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View ,AsyncStorage, StatusBar, SafeAreaView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../assets/images/logoh.jpeg";
+import {useToast} from "native-base"
    
 const ChangePasswordScreen = ({email,username}) => {
+  const toast = useToast();
   const navigation=useNavigation()
   const [newpassword,setNewPassword]=useState("")
   const [confirmnewPassword,setConfirmNewPassword]=useState("")
@@ -33,7 +35,13 @@ const ChangePasswordScreen = ({email,username}) => {
                     .then(res => res.json()).then(data => {
                         if (data.message == 'Password Changed Successfully') {
                             setLoading(false)
-                            alert('Password Changed Successfully')
+                            toast.show({
+                              render: () => {
+                                return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                        Password Changed Successfully
+                                      </Box>;
+                              }
+                            })
                             AsyncStorage.removeItem('user')
                             navigation.navigate('LoginScreen')
                         }

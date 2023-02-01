@@ -6,12 +6,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import NoImage from "../../assets/images/noimg.png";
 import BottomNavBar from "../../components/BottomNavBar";
 import { StatusBar } from "react-native";
+import {useToast} from "native-base"
 const AccountScreen=()=>{
     const width=Dimensions.get("window").width
     const navigation=useNavigation()
     const [userdata, setUserdata] = useState(null)
     const [refresh,setRefresh]=useState(false)
     const[posts,setPosts]=useState([])
+    const toast = useToast();
     const loaddata = async () => {
         setRefresh(true)
         AsyncStorage.getItem('user')
@@ -27,7 +29,7 @@ const AccountScreen=()=>{
                     .then(res => res.json()).then(data => {
                         if (data.message == 'User Found') {
                             setUserdata(data.user)
-                            fetch('http://10.0.2.2:3000/getuserposts',{
+                            fetch('https://kind-erin-shrimp-vest.cyclic.app/getuserposts',{
                                 method:"POST",
                                 headers:{
                                     "Content-Type":"application/json"
@@ -40,7 +42,13 @@ const AccountScreen=()=>{
           .catch(error => console.error(error));
                         }
                         else {
-                            alert('Login Again')
+                            toast.show({
+                                render: () => {
+                                  return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                         Login Again
+                                        </Box>;
+                                }
+                              })
                             navigation.navigate('LoginScreen')
                         }
                     })

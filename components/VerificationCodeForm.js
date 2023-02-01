@@ -3,8 +3,10 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {useToast} from "native-base"
 
 const VerificationCodeForm = ({useremail,userVerificationCode}) => {
+  const toast = useToast();
   const navigation=useNavigation()
   const [verification,setVerification]=useState("")
   const handleVerification=()=>{
@@ -12,7 +14,13 @@ const VerificationCodeForm = ({useremail,userVerificationCode}) => {
       navigation.navigate("ChooseUserNameScreen",{email:useremail})
     }
     else{
-      Alert.alert("Verification code is incorrect")
+      toast.show({
+        render: () => {
+          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                  Verification code is incorrect
+                </Box>;
+        }
+      })
     }
   }
   return <Center w="100%">

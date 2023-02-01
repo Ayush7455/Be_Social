@@ -90,11 +90,25 @@ const EditProfileScreen=()=>{
                             }
                             else {
                                 setLoading(false)
-                                alert("Please Try Again");
+                                toast.show({
+                                  render: () => {
+                                    return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                            Please Try Again
+                                          </Box>;
+                                  }
+                                })
+                               
                             }
                         })
                         .catch(err => {
-                            alert('Something went wrong')
+                          toast.show({
+                            render: () => {
+                              return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                     Something went wrong
+                                    </Box>;
+                            }
+                          })
+                           
                             setLoading(false)
                         })
                 }

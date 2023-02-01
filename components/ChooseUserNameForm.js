@@ -6,8 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import Success from "../assets/images/success.png";
 import Cross from "../assets/images/x.png";
 import { FontAwesome } from '@expo/vector-icons';
+import {useToast} from "native-base"
 
 const ChooseUserName = ({email}) => {
+  const toast = useToast();
+
   const [userName,setUserName]=useState("")
   const [loading,setLoading]=useState(false)
   const navigation=useNavigation()
@@ -35,7 +38,13 @@ const ChooseUserName = ({email}) => {
           }
           else{
             setLoading(false)
-            Alert.alert("Username already taken")
+            toast.show({
+              render: () => {
+                return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                        Username already taken
+                      </Box>;
+              }
+            })
           }
         }
       ).catch(err=>{

@@ -5,7 +5,10 @@ import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, Touchable
 import { useNavigation } from "@react-navigation/native";
 import Success from "../assets/images/success.png";
 import Cross from "../assets/images/x.png";
+import {useToast} from "native-base"
 const ModalPopup=({children,visible})=>{
+  const toast = useToast();
+
     const [showModal,setShowModal]=useState(visible)
     useEffect(()=>{
       ToggleModal()
@@ -62,12 +65,25 @@ const ForgotPasswordPasswordForm = ({
                     }
                     else {
                         setLoading(false)
-                        Alert.alert("Something went wrong");
+                        toast.show({
+                          render: () => {
+                            return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                    Something went wrong
+                                  </Box>;
+                          }
+                        })
+        
                     }
                 })
             .catch(err => {
                 setLoading(false);
-                Alert.alert(err)
+                toast.show({
+                  render: () => {
+                    return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                            {err}
+                          </Box>;
+                  }
+                })
             })
     }
 

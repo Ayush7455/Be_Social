@@ -3,8 +3,12 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { ActivityIndicator, Alert, TextInput, Touchable, TouchableOpacity, View,AsyncStorage } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {useToast} from "native-base"
+ 
+
 
 const LoginForm = () => {
+  const toast = useToast();
   const navigation=useNavigation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -30,7 +34,13 @@ const LoginForm = () => {
               .then(async data => {
                   if (data.error) {
                       setLoading(false)
-                      Alert.alert("Server Error")
+                      toast.show({
+                        render: () => {
+                          return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                 Server Error
+                                </Box>;
+                        }
+                      })
                   }
                   else if (data.message == 'Successfully Signed In') {
                       setLoading(false)
@@ -40,7 +50,13 @@ const LoginForm = () => {
               })
               .catch(err => {
                   setLoading(false)
-                  Alert.alert("Something went wrong")
+                  toast.show({
+                    render: () => {
+                      return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                             Something went wrong
+                            </Box>;
+                    }
+                  })
               })
       }
       // navigation.navigate('MainPage')

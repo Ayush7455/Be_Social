@@ -3,8 +3,10 @@ import { Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, C
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { ActivityIndicator, Alert, Image, Modal, Pressable, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {useToast} from "native-base"
 
 const SignUpForm = () => {
+  const toast = useToast();
   const navigation=useNavigation()
   const [email,setEmail]=useState("")
   const [loading,setLoading]=useState(false)
@@ -29,12 +31,24 @@ const SignUpForm = () => {
                 data => {
                     if (data.error === "Invalid Credentials") {
                         // alert('Invalid Credentials')
-                        alert('Invalid Credentials')
+                        toast.show({
+                          render: () => {
+                            return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                    Invalid Credentials
+                                  </Box>;
+                          }
+                        })
                         setLoading(false)
                     }
                     else if (data.message === "Verification Code Sent to your Email") {
                         setLoading(false)
-                        alert(data.message);
+                        toast.show({
+                          render: () => {
+                            return <Box bg="emerald.200" px="2" py="1" rounded="sm" mb={5}>
+                                    {data.message}
+                                  </Box>;
+                          }
+                        })
                         navigation.navigate('VerificationCodeScreen', {
                             useremail: data.email,
                             userVerificationCode: data.VerificationCode

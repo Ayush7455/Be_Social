@@ -6,10 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 import Success from "../assets/images/success.png";
 import Cross from "../assets/images/x.png";
 import { FontAwesome } from '@expo/vector-icons';
+import {useToast} from "native-base"
 
 const ForgotPasswordEmailForm= () => {
   const [email,setEmail]=useState("")
   const [loading,setLoading]=useState(false)
+  const toast = useToast();
   const navigation=useNavigation()
   const handleEmail = () => {
     if (email === '') {
@@ -28,13 +30,25 @@ const ForgotPasswordEmailForm= () => {
             .then(res => res.json()).then(data => {
                 if (data.error === "Invalid Credentials") {
                     // alert('Invalid Credentials')
-                    Alert.alert('Invalid Credentials')
+                    toast.show({
+                      render: () => {
+                        return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                Invalid Credentials
+                              </Box>;
+                      }
+                    })
                     setLoading(false)
                 }
                 else if (data.message === "Verification Code Sent to your Email") {
                     setLoading(false)
                     Alert.alert(data.message);
-
+                    toast.show({
+                      render: () => {
+                        return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                                {data.message}
+                              </Box>;
+                      }
+                    })
                     navigation.navigate('VerificationCodeForgotScreen', {
                         useremail: data.email,
                         userVerificationCode: data.VerificationCode

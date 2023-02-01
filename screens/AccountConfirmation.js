@@ -41,7 +41,7 @@ const AccountConfirmationScreen = () => {
         <VStack space={3} mt="5">
 
 
-          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>navigation.navigate("ProfileScreen")}>
+          <Button mt="2" colorScheme="indigo" style={{backgroundColor:"#267FFF"}} onPress={()=>navigation.navigate("LoginScreen")}>
             Let's Roll
           </Button>
           

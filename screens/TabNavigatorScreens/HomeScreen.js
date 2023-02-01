@@ -1,7 +1,10 @@
 import React, { useEffect,useState } from "react";
 import {View,FlatList,ActivityIndicator,AsyncStorage, SafeAreaView, StatusBar} from "react-native";
+import AccountHeader from "../../components/AccountHeader";
 import BottomNavBar from "../../components/BottomNavBar";
 import FeedItems from "../../components/FeedItems";
+import HomeHeader from "../../components/HomeHeader";
+import {useToast} from "native-base"
 const datas=[
     {
         id:1,
@@ -401,21 +404,37 @@ const users=[
 
 ]
 const HomeScreen=()=>{
+    const toast = useToast();
     const [userdata,setUserdata]=useState(null)
     useEffect(()=>{
      AsyncStorage.getItem("user").then(data=>{
          setUserdata(JSON.parse(data))
-     }).catch(err=>alert(err))
+     }).catch(err=>toast.show({
+        render: () => {
+          return <Box backgroundColor={"#FF0000"} px="2" py="1" rounded="sm" mb={5}>
+                  {err}
+                </Box>;
+        }
+      }))
     },[])
-    console.log("userdata",userdata)
-
     const [posts, setPosts] = useState([]);
-      useEffect(() => {
-        fetch('http://10.0.2.2:3000/getposts')
+    const loadposts=()=>{
+        fetch('https://kind-erin-shrimp-vest.cyclic.app/getposts')
           .then(res => res.json())
           .then(data => setPosts(data))
           .catch(error => console.error(error));
-      }, [posts]);
+    }
+    const refreshposts=()=>{
+        fetch('https://kind-erin-shrimp-vest.cyclic.app/getposts')
+          .then(res => res.json())
+          .then(data => setPosts(data))
+          .catch(error => console.error(error));
+    }
+
+      useEffect(() => {
+        loadposts()
+      },[]);
+   
     
      return(
         <>
@@ -423,13 +442,15 @@ const HomeScreen=()=>{
         backgroundColor={"white"}
         barStyle={"dark-content"}
         />
- <SafeAreaView  style={{backgroundColor:"#fff",flex:1,paddingBottom:25}}>
- <View style={{width:"100%"}}>
-             {datas.length<1?<ActivityIndicator size={"large"} color={"#2FBBF0"}/>:
-             <FlatList data={posts} renderItem={({item,index})=>(<FeedItems username={item.username} profile_photo={item.profilepic} feeditem={item.post} comments={item.comments} postdescription={item.postdescription} likes={item.likes} key={item._id} />)}
+ <SafeAreaView  style={{backgroundColor:"#fff",flex:1,paddingBottom:25,paddingTop:10}}> 
+ <View style={{width:"100%",paddingBottom:40}}>
+             {posts.length?
+             <FlatList data={posts} renderItem={({item,index})=>(<FeedItems details={item} key={item._id} />)}
              
              showsVerticalScrollIndicator={false}
-             />
+             />:
+            
+            <ActivityIndicator size={"large"} color={"#2FBBF0"}/>
              }
          </View>
          <BottomNavBar page={"HomeScreen"}/>
